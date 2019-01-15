@@ -48,8 +48,8 @@
           Formio.createForm(document.getElementById('formio'), baseUrl+'/'+formPath).then(function(form) {
               form.submission = {
                 data: {
-                   caseId: 'case-'+new Date().getTime(),
-                   dateTime: new Date()
+                   requestId: 'requestId-'+new Date().getTime(),
+                   directiveDate: new Date()
                 }
               };
 
@@ -70,7 +70,7 @@
 
 </head>
 <body>
-  <h1>IRT Directive Request</h1>
+  <h1>IRT Request</h1>
   <div id="formio"></div>
 </body>
 </html>
