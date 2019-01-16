@@ -109,7 +109,22 @@
 
           function viewTask(e) {
               e.preventDefault();
-
+              var formioEl = $("#formio");
+              
+              var myWindow = formioEl.kendoWindow({
+                    width: "600px",
+                    title: "Task Form",
+                    visible: false,
+                    actions: [
+                        "Pin",
+                        "Minimize",
+                        "Maximize",
+                        "Close"
+                    ],
+                    close: onClose
+                }).data("kendoWindow");
+                            
+            
               var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
               var formKey = "irt-due-dilligence-task";
               var formId = "5c3d0b3a51bc770018dc473b";
@@ -130,6 +145,9 @@
                     form.submission = {
                       data: submission.data
                     };
+                    
+                    myWindow.center()
+                            .open();  
 
                     // What to do when the submit begins.
                     form.on('submitDone', function(submission) {
