@@ -9,8 +9,8 @@
     <link rel="stylesheet" href="//kendo.cdn.telerik.com/2018.3.1017/styles/kendo.material.min.css" />
     <link rel="stylesheet" href="//kendo.cdn.telerik.com/2018.3.1017/styles/kendo.material.mobile.min.css" />
 
-    <script src="https://kendo.cdn.telerik.com/2018.3.1017/js/jquery.min.js"></script>
-    <script src="https://kendo.cdn.telerik.com/2018.3.1017/js/kendo.all.min.js"></script>
+    <script src="//kendo.cdn.telerik.com/2018.3.1017/js/jquery.min.js"></script>
+    <script src="//kendo.cdn.telerik.com/2018.3.1017/js/kendo.all.min.js"></script>
     <script type="text/javascript" src="http://activiti-keycloak.jx-staging.54.159.228.81.nip.io/auth/js/keycloak.js"></script>   
 </head>
 <body>
@@ -24,31 +24,7 @@
 
       var keycloak = Keycloak(serverUrl+'/keycloak.json');
 
-      keycloak.init({ onLoad: 'login-required' })
-            .success(function(authenticated) {
-                console.log('Keycloak: ', authenticated ? 'authenticated' : 'not authenticated');
-                /*fetch(serverUrl+'/graphql', {
-                    method: 'post',
-                    headers: {
-                      'Accept': 'application/json',
-                      'Content-Type': 'application/json',
-                      'Authorization': 'Bearer '+keycloak.token
-                    },
-                   credentials: 'include',
-                   body: JSON.stringify({
-                      "query": tasksQuery,
-                      "variables": null
-                    })
-                }).then(function(response) {
-                  return response.json();
-                }).then(function(json) {
-                  console.log(json)
-                })*/
-            }).error(function() {
-                alert('failed to initialize');
-            });  
-      
-      $(document).ready(function() {
+      var loadTaskGrid = function() {
           var dataSource = new kendo.data.DataSource({
               transport: {
                   read: {
@@ -130,7 +106,34 @@
               //wnd.content(detailsTemplate(dataItem));
               //wnd.center().open();
           }              
-      });
+      };
+        
+      keycloak.init({ onLoad: 'login-required' })
+            .success(function(authenticated) {
+                console.log('Keycloak: ', authenticated ? 'authenticated' : 'not authenticated');
+               
+                loadTaskGrid();
+          
+                /*fetch(serverUrl+'/graphql', {
+                    method: 'post',
+                    headers: {
+                      'Accept': 'application/json',
+                      'Content-Type': 'application/json',
+                      'Authorization': 'Bearer '+keycloak.token
+                    },
+                   credentials: 'include',
+                   body: JSON.stringify({
+                      "query": tasksQuery,
+                      "variables": null
+                    })
+                }).then(function(response) {
+                  return response.json();
+                }).then(function(json) {
+                  console.log(json)
+                })*/
+            }).error(function() {
+                alert('failed to initialize');
+            });          
     </script>
 </div>
 
