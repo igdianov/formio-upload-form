@@ -1,0 +1,140 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <base href="http://formio-file-upload.introproventures.com">
+    <style>html { font-size: 14px; font-family: Arial, Helvetica, sans-serif; }</style>
+    <title></title>
+    <link rel="stylesheet" href="//kendo.cdn.telerik.com/2018.3.1017/styles/kendo.common-material.min.css" />
+    <link rel="stylesheet" href="//kendo.cdn.telerik.com/2018.3.1017/styles/kendo.material.min.css" />
+    <link rel="stylesheet" href="//kendo.cdn.telerik.com/2018.3.1017/styles/kendo.material.mobile.min.css" />
+
+    <script src="https://kendo.cdn.telerik.com/2018.3.1017/js/jquery.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2018.3.1017/js/kendo.all.min.js"></script>
+    <script type="text/javascript" src="http://activiti-keycloak.jx-staging.54.159.228.81.nip.io/auth/js/keycloak.js"></script>   
+</head>
+<body>
+<div id="example">
+    <div id="grid"></div>
+    <script>
+      var serverUrl = 'http://activiti-cloud-notifications.jx-staging.54.159.228.81.nip.io';      
+      var READ_PRODUCTS_QUERY = "query {" +
+          " Tasks(where: {status: {NE: COMPLETED}}) { select { id name assignee priority dueDate status formKey processInstance { businessKey } variables { name value } } }" +
+          "}";
+
+      var keycloak = Keycloak(serverUrl+'/keycloak.json');
+
+      keycloak.init({ onLoad: 'login-required' })
+            .success(function(authenticated) {
+                console.log('Keycloak: ', authenticated ? 'authenticated' : 'not authenticated');
+                /*fetch(serverUrl+'/graphql', {
+                    method: 'post',
+                    headers: {
+                      'Accept': 'application/json',
+                      'Content-Type': 'application/json',
+                      'Authorization': 'Bearer '+keycloak.token
+                    },
+                   credentials: 'include',
+                   body: JSON.stringify({
+                      "query": tasksQuery,
+                      "variables": null
+                    })
+                }).then(function(response) {
+                  return response.json();
+                }).then(function(json) {
+                  console.log(json)
+                })*/
+            }).error(function() {
+                alert('failed to initialize');
+            });  
+      
+      $(document).ready(function() {
+          var dataSource = new kendo.data.DataSource({
+              transport: {
+                  read: {
+                      contentType: "application/json",
+                      url: serverUrl+"/graphql",
+                      type: "POST",
+                      data: function() {
+                          console.log('data');
+                          return { query: READ_PRODUCTS_QUERY };
+                      },
+                      beforeSend: function(req) {
+                          console.log('beforeSend');
+                          req.setRequestHeader('Authorization', 'Bearer '+keycloak.token);
+                      }
+                  },
+                  parameterMap: function(options, operation) {
+                      console.log('parameterMap');
+
+                      return  kendo.stringify({
+                          query: options.query,
+                          variables: options.variables
+                      });
+                  }
+              },
+              schema: {
+                  data: function(response) {
+                      console.log('response');
+                      return response.data.Tasks.select; 
+                  },
+                  total: function(response) {
+                      console.log('total');
+                      return response.data.Tasks.select.length;
+                  },
+                  model: {
+                      id: "id",
+                      fields: {
+                          id: { type: "string", editable: false },
+                          name: { type: "string", editable: false },
+                          assignee: { type: "string" },
+                          status: { type: "string" }
+                      }
+                  }
+              },
+              pageSize: 20
+          });
+
+          $("#grid").kendoGrid({
+              dataSource: dataSource,
+              height: 750,
+              groupable: false,
+              sortable: false,
+              pageable: false,
+              toolbar: ["create"],
+              editable: "inline",
+              columns: [{
+                  field: "id",
+                  title: "Task ID"
+              },
+              {
+                  field: "name",
+                  title: "Task Name"
+              },
+              {
+                  field: "assignee",
+                  title: "Assignee"
+              },
+              {
+                  field: "status",
+                  title: "Status"
+              },
+              { command: { text: "View Task", click: viewTask }, title: " ", width: "180px" }]
+          });
+
+          function viewTask(e) {
+              e.preventDefault();
+
+              var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+              alert(JSON.stringify(dataItem, null, 2));
+              //wnd.content(detailsTemplate(dataItem));
+              //wnd.center().open();
+          }              
+      });
+    </script>
+</div>
+
+
+
+</body>
+</html>
