@@ -90,6 +90,7 @@
               groupable: true,
               sortable: true,
               pageable: false,
+              toolbar: [{ text: "Refresh", click: refreshGrid }],
               //editable: "inline",
               columns: [{
                   field: "id",
@@ -180,13 +181,22 @@
                       Formio.createForm(document.getElementById('formio'), baseUrl + '/' + formKey + '/submission/' + submissionId, {
                         readOnly: true,
                         viewAsHtml: true
-                      });
+                      }).then(function(form) {
+                        refreshGrid();
+                      });;
                    });
                 })
               })
               //wnd.content(detailsTemplate(dataItem));
               //wnd.center().open();
           }              
+      };
+      
+      var refreshGrid = function() {
+        $('#grid').data('kendoGrid').dataSource.read()
+          .then(function() {
+            $('#grid').data('kendoGrid').refresh();
+        });                        
       };
       
       var fetchForm = function(formId) {	
