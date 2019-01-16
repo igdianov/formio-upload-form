@@ -87,7 +87,7 @@
                       'Content-Type': 'application/json',
                       'Auhtorization': 'Bearer ' + keycloak.token
                     },
-                    mode: 'no-cors',
+                    mode: 'cors',
                     body: JSON.stringify({
                       "query": tasksQuery,
                       "variables": null
