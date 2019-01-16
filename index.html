@@ -95,6 +95,7 @@
                       'Authorization': token
                     },
                    credentials: 'include',
+                   mode: 'cors',
                    body: body
                 }).then(function(response) {
                   return response.json();
