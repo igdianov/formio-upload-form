@@ -29,7 +29,7 @@
 
   var keycloak = Keycloak('keycloak.json');
     
-  keycloak.init({ onLoad: 'sso-check' })
+  keycloak.init({ onLoad: 'check-sso' })
           .success(function(authenticated) {
               alert(authenticated ? 'authenticated' : 'not authenticated');
           }).error(function() {
