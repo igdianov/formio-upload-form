@@ -113,6 +113,7 @@
               
               var myWindow = formioEl.kendoWindow({
                     width: "600px",
+                    height: "600px",
                     title: "Task Form",
                     visible: false,
                     actions: [
@@ -124,7 +125,6 @@
                     //close: onClose
                 }).data("kendoWindow");
                             
-            
               var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
               var formKey = "irt-due-dilligence-task";
               var formId = "5c3d0b3a51bc770018dc473b";
