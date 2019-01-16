@@ -90,11 +90,12 @@
                 fetch('http://activiti-cloud-notifications.jx-staging.54.159.228.81.nip.io/graphql', {
                     method: 'post',
                     headers: {
+                      'Accept': 'application/json',
                       'Content-Type': 'application/json',
                       'Auhtorization': token
                     },
-                    mode: 'cors',
-                    body: body
+                   credentials: 'include',
+                   body: body
                 }).then(function(response) {
                   return response.json();
                 }).then(function(json) {
