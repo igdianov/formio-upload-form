@@ -104,9 +104,17 @@
                   field: "status",
                   title: "Status"
               },
-              { command: { text: "View Task", click: viewTask }, title: " ", width: "180px" }]
+              { command: [{ text: "View Task", click: viewTask }, { text: "Documents", click: viewDocouments }], 
+                title: " ", width: "280px" 
+              }]
           });
 
+          function viewDocuments(e) {
+            e.preventDefault();
+            
+             
+          }
+        
           function viewTask(e) {
               e.preventDefault();
               var formioEl = $("#formio");
