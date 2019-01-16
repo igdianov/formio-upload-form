@@ -28,35 +28,11 @@
   var serverUrl = 'http://activiti-cloud-notifications.jx-staging.54.159.228.81.nip.io';
 
   var keycloak = Keycloak('keycloak.json');
-    
-  keycloak.init({ onLoad: 'check-sso' })
-          .success(function(authenticated) {
-              alert(authenticated ? 'authenticated' : 'not authenticated');
-          }).error(function() {
-              alert('failed to initialize');
-          });  
-    
+
   var loadForm = function() {
       var baseUrl = "http://formio.jx-staging.54.159.228.81.nip.io";
       var formPath = "formio-upload";
 
-      fetch('http://activiti-cloud-notifications.jx-staging.54.159.228.81.nip.io/graphql', {
-          method: 'post',
-          headers: {
-            'Content-Type': 'application/json',
-            'Auhtorization': 'Bearer ' + keycloak.token
-          },
-          mode: 'cors',
-          body: JSON.stringify({
-            "query": tasksQuery,
-            "variables": null
-          })
-      }).then(function(response) {
-        return response.json();
-      }).then(function(json) {
-        console.log(json)
-      })
-    
       fetch(baseUrl+'/user/login', {
           method: 'post',
           headers: {
@@ -100,6 +76,29 @@
         })
       })
     }
+  
+    keycloak.init({ onLoad: 'check-sso' })
+            .success(function(authenticated) {
+                fetch('http://activiti-cloud-notifications.jx-staging.54.159.228.81.nip.io/graphql', {
+                    method: 'post',
+                    headers: {
+                      'Content-Type': 'application/json',
+                      'Auhtorization': 'Bearer ' + keycloak.token
+                    },
+                    mode: 'cors',
+                    body: JSON.stringify({
+                      "query": tasksQuery,
+                      "variables": null
+                    })
+                }).then(function(response) {
+                  return response.json();
+                }).then(function(json) {
+                  console.log(json)
+                })
+            }).error(function() {
+                alert('failed to initialize');
+            });  
+  
 </script>
 
 </head>
