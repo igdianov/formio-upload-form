@@ -79,6 +79,8 @@
   
     keycloak.init({ onLoad: 'check-sso' })
             .success(function(authenticated) {
+                alert(authenticated ? 'authenticated' : 'not authenticated');
+                debugger; 
                 fetch('http://activiti-cloud-notifications.jx-staging.54.159.228.81.nip.io/graphql', {
                     method: 'post',
                     headers: {
