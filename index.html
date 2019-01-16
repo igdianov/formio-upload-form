@@ -37,7 +37,8 @@
           },
           mode: 'cors',
           body: JSON.stringify({
-            "query": 
+            "query": tasksQuery,
+            "variables": null
           })
       }).then(function(response) {
         return response.json();
@@ -52,8 +53,10 @@
           },
           mode: 'cors',
           body: JSON.stringify({
-            "query": tasksQuery,
-            "variables":null
+            "data": {
+              "email": email,
+              "password": password
+            }
           })
         }).then(function(response) {
           Formio.setBaseUrl(baseUrl);
