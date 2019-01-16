@@ -81,22 +81,18 @@
             .success(function(authenticated) {
                 alert(authenticated ? 'authenticated' : 'not authenticated');
                 debugger; 
-                var token = 'Bearer '+keycloak.token;
-                var body = JSON.stringify({
-                      "query": tasksQuery,
-                      "variables": null
-                    });
-      
-                fetch('http://activiti-cloud-notifications.jx-staging.54.159.228.81.nip.io/graphql', {
+                fetch(serverUrl+'/graphql', {
                     method: 'post',
                     headers: {
                       'Accept': 'application/json',
                       'Content-Type': 'application/json',
-                      'Authorization': token
+                      'Authorization': 'Bearer '+keycloak.token
                     },
                    credentials: 'include',
-                   mode: 'cors',
-                   body: body
+                   body: JSON.stringify({
+                      "query": tasksQuery,
+                      "variables": null
+                    })
                 }).then(function(response) {
                   return response.json();
                 }).then(function(json) {
