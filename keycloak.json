@@ -1,0 +1,8 @@
+{
+  "auth-server-url":"http://activiti-keycloak.jx-staging.54.159.228.81.nip.io/auth",
+  "realm":"activiti",
+  "ssl-required":"none",
+  "resource":"activiti",
+  "public-client":true,
+  "confidential-port":0
+}
