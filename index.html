@@ -79,8 +79,8 @@
   
     keycloak.init({ onLoad: 'login-required' })
             .success(function(authenticated) {
-                alert(authenticated ? 'authenticated' : 'not authenticated');
-                debugger; 
+                console.log('Keycloak: ', authenticated ? 'authenticated' : 'not authenticated');
+                //debugger; 
                 fetch(serverUrl+'/graphql', {
                     method: 'post',
                     headers: {
