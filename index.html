@@ -8,10 +8,11 @@
   <meta name="googlebot" content="noindex, nofollow">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
-  <link rel="stylesheet" type="text/css" href="http://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" type="text/css" href="http://stackpath.bootstrapcdn.com/bootswatch/4.1.3/materia/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="http://unpkg.com/formiojs@latest/dist/formio.full.min.css">
-  <script type="text/javascript" src="http://unpkg.com/formiojs@latest/dist/formio.full.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="//stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="//stackpath.bootstrapcdn.com/bootswatch/4.1.3/materia/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="//unpkg.com/formiojs@latest/dist/formio.full.min.css">
+  <script type="text/javascript" src="//unpkg.com/formiojs@latest/dist/formio.full.min.js"></script>
+  <script type="text/javascript" src="http://activiti-keycloak.jx-staging.54.159.228.81.nip.io/auth/js/keycloak.js"></script>
 
   <style id="compiled-css" type="text/css">
       h1 {
@@ -24,8 +25,18 @@
 
   <script type="text/javascript">
   var tasksQuery = "query { Tasks(where: {status: {NE: COMPLETED}}) { select { id name assignee priority dueDate status processInstance { businessKey } variables { name value } }}}"  ;
+  var serverUrl = 'http://activiti-cloud-notifications.jx-staging.54.159.228.81.nip.io';
 
-  window.onload=function(){
+  var keycloak = Keycloak(serverUrl+'/keycloak.json');
+    
+  keycloak.init({ onLoad: 'sso-check' })
+          .success(function(authenticated) {
+              alert(authenticated ? 'authenticated' : 'not authenticated');
+          }).error(function() {
+              alert('failed to initialize');
+          });  
+    
+  var loadForm = function() {
       var baseUrl = "http://formio.jx-staging.54.159.228.81.nip.io";
       var formPath = "formio-upload";
 
@@ -33,7 +44,7 @@
           method: 'post',
           headers: {
             'Content-Type': 'application/json',
-            'Auhtorization': 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJoTUJPYnNyb1BJS2JJeTVOUGdnU0pPSGRDcmZFUWlva2otQUIwQjBaS3U0In0.eyJqdGkiOiJhNDlkNjkzNS1mZWRhLTQxYTctYmU1Yi1jMWY0ZWRjZmIwNDUiLCJleHAiOjE1NDc1OTc4OTEsIm5iZiI6MCwiaWF0IjoxNTQ3NTk3NTkxLCJpc3MiOiJodHRwOi8vYWN0aXZpdGkta2V5Y2xvYWsuangtc3RhZ2luZy41NC4xNTkuMjI4LjgxLm5pcC5pby9hdXRoL3JlYWxtcy9hY3Rpdml0aSIsImF1ZCI6ImFjdGl2aXRpIiwic3ViIjoiNWY2ODI5OTktZDExZC00YTQyLWJjNDItODZiN2U2NzViYjc2IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoiYWN0aXZpdGkiLCJub25jZSI6Ijk4YzQyZjc2LTViMWUtNGQyYy04YTcwLTRkYmVlODhiZWQzOCIsImF1dGhfdGltZSI6MTU0NzU5NTQ3Mywic2Vzc2lvbl9zdGF0ZSI6ImM1NTdlNzA4LWYzZjItNGJlZi1hODdhLTNkY2VmNjQ2YmNmYyIsImFjciI6IjAiLCJhbGxvd2VkLW9yaWdpbnMiOlsiKiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJBQ1RJVklUSV9VU0VSIiwiQUNUSVZJVElfQURNSU4iLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7ImFjY291bnQiOnsicm9sZXMiOlsibWFuYWdlLWFjY291bnQiLCJtYW5hZ2UtYWNjb3VudC1saW5rcyIsInZpZXctcHJvZmlsZSJdfX0sInNjb3BlIjoib3BlbmlkIHByb2ZpbGUgZW1haWwiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsIm5hbWUiOiJ0ZXN0YWRtaW4gdGVzdGFkbWluIiwicHJlZmVycmVkX3VzZXJuYW1lIjoidGVzdGFkbWluIiwiZ2l2ZW5fbmFtZSI6InRlc3RhZG1pbiIsImZhbWlseV9uYW1lIjoidGVzdGFkbWluIiwiZW1haWwiOiJ0ZXN0YWRtaW5AdGVzdC5jb20ifQ.dTKfU_zbw_cgiQAxigTHtbJpQ22qFrS4pHkKRlRwUa18B3h0cdGk1WyzAmtZiwrhnpqOKYD_SodreFuYg1RD7l0kaNcrWFCWleGCfMTCU5H7Lt3U7DO2NWJdw1i_AFqgYSb9JEOeOYWc64e4J9g6gzxGItXrcAbBfz1aMGtjtXcHP7Qkmup8djWPppXoXXYEqLOxNHwsV9MU690uj-Ll0ijx-EeM2AMEmBCPUUUrA3Lcu0p08SQGUuZfDXcExJR-mf_9155A4nbnzTjSoxQHY5p0neQyeOY0uLsW6fmCwOMq95uH5_bojUGZpOnzkrsfzGGwrhcwShP8U3kp4AHwsg'
+            'Auhtorization': 'Bearer ' + keycloak.token
           },
           mode: 'cors',
           body: JSON.stringify({
