@@ -81,7 +81,9 @@
             .success(function(authenticated) {
                 console.log('Keycloak: ', authenticated ? 'authenticated' : 'not authenticated');
                 //debugger; 
-                fetch(serverUrl+'/graphql', {
+      
+                loadForm(); 
+/*                fetch(serverUrl+'/graphql', {
                     method: 'post',
                     headers: {
                       'Accept': 'application/json',
@@ -97,7 +99,7 @@
                   return response.json();
                 }).then(function(json) {
                   console.log(json)
-                })
+                })*/
             }).error(function() {
                 alert('failed to initialize');
             });  
