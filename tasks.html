@@ -111,8 +111,8 @@
 
           function viewDocuments(e) {
             e.preventDefault();
-            
-            alert("Documents") 
+            var tab = window.open("http://localhost:5000/#/irt", '_blank');
+            tab.focus();
           }
         
           function viewTask(e) {
