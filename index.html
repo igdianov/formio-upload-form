@@ -27,7 +27,7 @@
   var tasksQuery = "query { Tasks(where: {status: {NE: COMPLETED}}) { select { id name assignee priority dueDate status processInstance { businessKey } variables { name value } }}}"  ;
   var serverUrl = 'http://activiti-cloud-notifications.jx-staging.54.159.228.81.nip.io';
 
-  var keycloak = Keycloak(serverUrl+'/keycloak.json');
+  var keycloak = Keycloak('keycloak.json');
     
   keycloak.init({ onLoad: 'sso-check' })
           .success(function(authenticated) {
