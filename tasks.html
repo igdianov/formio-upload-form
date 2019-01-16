@@ -74,10 +74,9 @@
           $("#grid").kendoGrid({
               dataSource: dataSource,
               height: 750,
-              groupable: false,
-              sortable: false,
+              groupable: true,
+              sortable: true,
               pageable: false,
-              toolbar: ["create"],
               editable: "inline",
               columns: [{
                   field: "id",
