@@ -110,11 +110,19 @@
           function viewTask(e) {
               e.preventDefault();
               var formioEl = $("#formio");
+            
+              var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
+              console.log('Task json',JSON.stringify(dataItem, null, 2));
+            
+              var formKey = dataItem.formKey || "irt-due-dilligence-task";
+              var formId = dataItem.variables.find(v => v.name == 'formId').value; // "5c3d0b3a51bc770018dc473b";
+              var submissionId = dataItem.variables.find(v => v.name == 'submissionId').value; "5c3e079051bc770018dc4761";
+              var taskId = dataItem.id; //'08a99374-18e1-11e9-ab3c-d26afa2117c5';        
               
-              var myWindow = formioEl.kendoWindow({
+              var taskWindow = formioEl.kendoWindow({
                     width: "600px",
                     height: "600px",
-                    title: "Task Form",
+                    title: dataItem.name,
                     visible: false,
                     actions: [
                         "Pin",
@@ -124,14 +132,6 @@
                     ],
                     //close: onClose
                 }).data("kendoWindow");
-                            
-              var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-              var formKey = "irt-due-dilligence-task";
-              var formId = "5c3d0b3a51bc770018dc473b";
-              var submissionId = "5c3e079051bc770018dc4761";
-              var taskId = '08a99374-18e1-11e9-ab3c-d26afa2117c5';        
-              
-              console.log('Task json',JSON.stringify(dataItem, null, 2));
             
               formioLogin(baseUrl,"admin@example.com","password")
                 .then(function(profile) {
@@ -146,7 +146,7 @@
                       data: submission.data
                     };
                     
-                    myWindow.center()
+                    taskWindow.center()
                             .open();  
 
                     // What to do when the submit begins.
