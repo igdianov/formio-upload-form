@@ -56,11 +56,11 @@
     <script>
       var baseUrl = "http://formio.jx-staging.54.159.228.81.nip.io";
       var serverUrl = 'http://activiti-cloud-notifications.jx-staging.54.159.228.81.nip.io';      
-//       var READ_TASKS_QUERY = "query {" +
-//           " Tasks(where: {status: {EQ: ASSIGNED}}) { select { id name assignee priority createdDate dueDate status formKey processInstance { id, businessKey name } variables { name value } } }" +
-//           "}";
+       var ADMIN_TASKS_QUERY = "query {" +
+           " Tasks(where: {status: {EQ: ASSIGNED}}) { select { id name assignee priority createdDate dueDate status formKey processInstance { id, businessKey name } variables { name value } } }" +
+           "}";
 
-      var READ_TASKS_QUERY = "query($assignee: String) {\n" + 
+      var USER_TASKS_QUERY = "query($assignee: String) {\n" + 
                             "  Tasks(where: {\n" + 
                             "    status: {EQ: ASSIGNED} \n" + 
                             "    assignee: {OR: {EQ: $assignee}}}\n" + 
@@ -89,6 +89,10 @@
       
       var keycloak = Keycloak(serverUrl+'/keycloak.json');
 
+      var isAdmin = function() {
+        return keycloak.profile.username == 'testadmin';
+      };
+      
       var loadTaskGrid = function() {
           var dataSource = new kendo.data.DataSource({
               transport: {
@@ -99,7 +103,7 @@
                       data: function() {
                           console.log('data');
                           return { 
-                            query: READ_TASKS_QUERY,
+                            query: isAdmin() ? ADMIN_TASKS_QUERY : USER_TASKS_QUERY,
                             variables: {"assignee": keycloak.profile.username }                            
                           };
                       },
