@@ -85,8 +85,6 @@
           });
         
           var refreshGrid = function(e) {
-            e && e.preventDefault();
-            
             $('#grid').data('kendoGrid').dataSource.read()
               .then(function() {
                 $('#grid').data('kendoGrid').refresh();
@@ -99,7 +97,7 @@
               groupable: true,
               sortable: true,
               pageable: false,
-              toolbar: [{ text: "Refresh", click: refreshGrid }],
+              toolbar: ["refresh"],
               //editable: "inline",
               columns: [{
                   field: "id",
