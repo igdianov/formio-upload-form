@@ -60,7 +60,7 @@
 //           " Tasks(where: {status: {EQ: ASSIGNED}}) { select { id name assignee priority createdDate dueDate status formKey processInstance { id, businessKey name } variables { name value } } }" +
 //           "}";
 
-      var READ_TASK_QUERY = "query($assignee: String) {\n" + 
+      var READ_TASKS_QUERY = "query($assignee: String) {\n" + 
                             "  Tasks(where: {\n" + 
                             "    status: {EQ: ASSIGNED} \n" + 
                             "    assignee: {OR: {EQ: $assignee}}}\n" + 
