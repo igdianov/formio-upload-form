@@ -75,7 +75,7 @@
       var baseUrl = "http://formio.jx-staging.54.159.228.81.nip.io";
       var serverUrl = 'http://activiti-cloud-notifications.jx-staging.54.159.228.81.nip.io';      
        var ADMIN_TASKS_QUERY = "query {" +
-           " Tasks(where: {status: {EQ: ASSIGNED}}) { select { id name assignee priority createdDate dueDate status formKey processInstance { id, businessKey name } variables { name value } } }" +
+           " Tasks(where: {formKey: {IS_NULL: false}}) { select { id name assignee priority createdDate dueDate status formKey processInstance { id, businessKey name } variables { name value } } }" +
            "}";
 
       var USER_TASKS_QUERY = "query($assignee: String) {\n" + 
