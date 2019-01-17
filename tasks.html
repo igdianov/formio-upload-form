@@ -71,7 +71,10 @@
                       type: "POST",
                       data: function() {
                           console.log('data');
-                          return { query: READ_PRODUCTS_QUERY };
+                          return { 
+                            query: READ_PRODUCTS_QUERY,
+                            variables: {"assginee": keycloak.profile.username }                            
+                          };
                       },
                       beforeSend: function(req) {
                           console.log('beforeSend');
@@ -288,10 +291,13 @@
       };      
         
       keycloak.init({ onLoad: 'login-required' })
-            .success(function(authenticated) {
+              .success(function(authenticated) {
                 console.log('Keycloak: ', authenticated ? 'authenticated' : 'not authenticated');
-                loadTaskGrid();
-          
+                keycloak.loadUserProfile().then(function() {
+                  loadTaskGrid();
+                }, function() {
+                  alert('failed to load user profile');
+                });        
             }).error(function() {
                 alert('failed to initialize');
             });          
