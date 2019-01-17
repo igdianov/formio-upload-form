@@ -25,9 +25,12 @@
     <div id="grid"></div>
     <div id="formio"></div>
     <script type="text/x-kendo-template" id="template">
-        <div class="refreshBtnContainer">
-            <a href="\\#" class="k-pager-refresh k-link k-button k-button-icon" title="Refresh"><span class="k-icon k-i-reload"></span></a>
-        </div>
+      <div class="refreshBtnContainer">
+        <a href="\\#" class="k-pager-refresh k-link k-button k-button-icon" title="Refresh"><span class="k-icon k-i-reload"></span></a>
+        <div class="toolbar">
+          <input type="button" id="logout" style="width: 100px"/>
+        </div>            
+      </div>
     </script>      
     <style>
         #grid .k-grid-toolbar
@@ -154,6 +157,11 @@
           grid.find(".k-grid-toolbar").on("click", ".k-pager-refresh", function (e) {
               e.preventDefault();
               grid.data("kendoGrid").dataSource.read();
+          });
+
+          grid.find(".k-grid-toolbar").on("click", "#logout", function (e) {
+              e.preventDefault();
+              keycloak.logout();
           });
         
           var refreshGrid = function(e) {
