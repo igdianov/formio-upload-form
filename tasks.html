@@ -19,6 +19,43 @@
   <script src="//kendo.cdn.telerik.com/2018.3.1017/js/kendo.all.min.js"></script>
 
   <script type="text/javascript" src="http://activiti-keycloak.jx-staging.54.159.228.81.nip.io/auth/js/keycloak.js"></script>   
+  <style>
+      html,
+      body,
+      #parent,
+      #grid
+      {
+        margin: 0;
+        padding: 0;
+        border-width: 0;
+        height: 100%; /* DO NOT USE !important for setting the Grid height! */
+      }
+
+      html
+      {
+        overflow: hidden;
+        font: 13px sans-serif;
+      }
+      #grid .k-grid-toolbar
+      {
+          padding: .6em 1.3em .6em .4em;
+      }
+      .category-label
+      {
+          vertical-align: middle;
+          padding-right: .5em;
+      }
+      #category
+      {
+          vertical-align: middle;
+      }
+      .refreshBtnContainer {
+          display: inline-block;
+      }
+      .toolbar {
+          float: right;
+      }
+  </style>    
 </head>
 <body>
   <div id="example">
@@ -34,27 +71,6 @@
           <input type="button" id="logout" value="Logout" style="width: 60px"/>
         </div>            
     </script>      
-    <style>
-        #grid .k-grid-toolbar
-        {
-            padding: .6em 1.3em .6em .4em;
-        }
-        .category-label
-        {
-            vertical-align: middle;
-            padding-right: .5em;
-        }
-        #category
-        {
-            vertical-align: middle;
-        }
-        .refreshBtnContainer {
-            display: inline-block;
-        }
-        .toolbar {
-            float: right;
-        }
-    </style>    
     <script>
       var baseUrl = "http://formio.jx-staging.54.159.228.81.nip.io";
       var serverUrl = 'http://activiti-cloud-notifications.jx-staging.54.159.228.81.nip.io';      
@@ -150,7 +166,7 @@
         
           var grid = $("#grid").kendoGrid({
               dataSource: dataSource,
-              height: '100%',
+              resizable: true,
               groupable: true,
               sortable: true,
               pageable: {
