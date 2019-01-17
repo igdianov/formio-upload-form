@@ -24,7 +24,32 @@
   <div id="example">
     <div id="grid"></div>
     <div id="formio"></div>
-    
+    <script type="text/x-kendo-template" id="template">
+        <div class="refreshBtnContainer">
+            <a href="\\#" class="k-pager-refresh k-link k-button k-button-icon" title="Refresh"><span class="k-icon k-i-reload"></span></a>
+        </div>
+    </script>      
+    <style>
+        #grid .k-grid-toolbar
+        {
+            padding: .6em 1.3em .6em .4em;
+        }
+        .category-label
+        {
+            vertical-align: middle;
+            padding-right: .5em;
+        }
+        #category
+        {
+            vertical-align: middle;
+        }
+        .refreshBtnContainer {
+            display: inline-block;
+        }
+        .toolbar {
+            float: right;
+        }
+    </style>    
     <script>
       var baseUrl = "http://formio.jx-staging.54.159.228.81.nip.io";
       var serverUrl = 'http://activiti-cloud-notifications.jx-staging.54.159.228.81.nip.io';      
@@ -84,14 +109,7 @@
               pageSize: 20
           });
         
-          var refreshGrid = function(e) {
-            $('#grid').data('kendoGrid').dataSource.read()
-              .then(function() {
-                $('#grid').data('kendoGrid').refresh();
-            });                        
-          };
-
-          $("#grid").kendoGrid({
+          var grid = $("#grid").kendoGrid({
               dataSource: dataSource,
               height: '720',
               groupable: true,
@@ -99,7 +117,7 @@
               pageable: {
                 refresh: true,
               },              
-              //toolbar: [],
+              toolbar: kendo.template($("#template").html())
               columns: [{
                   field: "id",
                   title: "Task ID"
@@ -132,6 +150,18 @@
                 title: " ", width: "280px" 
               }]
           });
+
+          grid.find(".k-grid-toolbar").on("click", ".k-pager-refresh", function (e) {
+              e.preventDefault();
+              grid.data("kendoGrid").dataSource.read();
+          });
+        
+          var refreshGrid = function(e) {
+            grid.data('kendoGrid').dataSource.read()
+              .then(function() {
+                grid.data('kendoGrid').refresh();
+            });                        
+          };
 
           function viewDocuments(e) {
             e.preventDefault();
