@@ -96,8 +96,10 @@
               height: '720',
               groupable: true,
               sortable: true,
-              pageable: true,
-              //toolbar: ["refresh"],
+              pageable: {
+                refresh: true,
+              },              
+              //toolbar: [],
               columns: [{
                   field: "id",
                   title: "Task ID"
