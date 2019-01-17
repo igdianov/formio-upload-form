@@ -93,12 +93,11 @@
 
           $("#grid").kendoGrid({
               dataSource: dataSource,
-              height: 'auto',
+              height: '720',
               groupable: true,
               sortable: true,
-              pageable: false,
-              toolbar: ["refresh"],
-              //editable: "inline",
+              pageable: true,
+              //toolbar: ["refresh"],
               columns: [{
                   field: "id",
                   title: "Task ID"
