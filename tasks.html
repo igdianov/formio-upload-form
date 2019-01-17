@@ -83,6 +83,15 @@
               },
               pageSize: 20
           });
+        
+          var refreshGrid = function(e) {
+            e && e.preventDefault();
+            
+            $('#grid').data('kendoGrid').dataSource.read()
+              .then(function() {
+                $('#grid').data('kendoGrid').refresh();
+            });                        
+          };
 
           $("#grid").kendoGrid({
               dataSource: dataSource,
@@ -183,6 +192,7 @@
                         viewAsHtml: true
                       }).then(function(form) {
                         refreshGrid();
+                        taskWindow.close();
                       });;
                    });
                 })
@@ -190,13 +200,6 @@
               //wnd.content(detailsTemplate(dataItem));
               //wnd.center().open();
           }              
-      };
-      
-      var refreshGrid = function() {
-        $('#grid').data('kendoGrid').dataSource.read()
-          .then(function() {
-            $('#grid').data('kendoGrid').refresh();
-        });                        
       };
       
       var fetchForm = function(formId) {	
