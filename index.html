@@ -53,7 +53,10 @@
           Formio.createForm(document.getElementById('formio'), baseUrl+'/'+formPath).then(function(form) {
               form.submission = {
                 data: {
-                   caseId: 'caseId-'+new Date().getTime(),
+                   requestId: 'requestId-'+new Date().getTime(),
+                   directiveDate: new Date(),
+                   requestor: 'John Dow',
+                   amount: 50000,
                    email: 'john@doe.com',
                    subject: 'Trade Request',
                    accountNumber: 12345678
