@@ -53,10 +53,7 @@
           Formio.createForm(document.getElementById('formio'), baseUrl+'/'+formPath).then(function(form) {
               form.submission = {
                 data: {
-                   requestId: 'requestId-'+new Date().getTime(),
-                   directiveDate: new Date(),
-                   requestor: 'John Dow',
-                   amount: 50000,
+                   caseId: 'caseId-'+new Date().getTime(),
                    email: 'john@doe.com',
                    subject: 'Trade Request',
                    accountNumber: 12345678
@@ -108,7 +105,7 @@
 
 </head>
 <body>
-  <h1>IRT Request</h1>
+  <h1>Start Case</h1>
   <div id="formio"></div>
 </body>
 </html>
